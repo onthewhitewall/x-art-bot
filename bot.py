@@ -95,19 +95,17 @@ with sync_playwright() as p:
     page.wait_for_selector('input[name="text"]', timeout=60000)
     page.fill('input[name="text"]', username)
 
-    # 「次へ」ボタンをクリックしてパスワード画面へ
-    next_button = page.locator('div[role="button"] >> text=Next')
-    next_button.wait_for(state="visible", timeout=60000)
-    next_button.click()
+    # 「次へ」ボタン（テキスト依存しない）
+    page.locator('div[role="button"]').first.wait_for(state="visible", timeout=60000)
+    page.locator('div[role="button"]').first.click()
 
-    # パスワード待機
+    # パスワード入力
     page.wait_for_selector('input[name="password"]', timeout=60000)
     page.fill('input[name="password"]', password)
 
-    # ログインボタンをクリック
-    login_button = page.locator('div[role="button"] >> text="Log in"')
-    login_button.wait_for(state="visible", timeout=60000)
-    login_button.click()
+    # ログインボタン（最初のボタンをクリック）
+    page.locator('div[role="button"]').nth(1).wait_for(state="visible", timeout=60000)
+    page.locator('div[role="button"]').nth(1).click()
 
     page.wait_for_timeout(5000)
 
