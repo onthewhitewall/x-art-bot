@@ -91,17 +91,22 @@ with sync_playwright() as p:
     # ログイン画面に移動
     page.goto("https://x.com/i/flow/login")
 
-    # メール／ユーザー名入力
+    # ユーザー名入力
     page.wait_for_selector('input[name="text"]', timeout=60000)
     page.fill('input[name="text"]', username)
-    page.keyboard.press("Enter")
 
-    # パスワード入力欄が出るまで待つ
+    # 「次へ」ボタンをクリックしてパスワード画面へ
+    page.wait_for_selector('div[role="button"]:has-text("Next")', timeout=60000)
+    page.click('div[role="button"]:has-text("Next")')
+
+    # パスワード待機
     page.wait_for_selector('input[name="password"]', timeout=60000)
     page.fill('input[name="password"]', password)
-    page.keyboard.press("Enter")
 
-    # ログイン完了まで少し待つ
+    # ログインボタンをクリック
+    page.wait_for_selector('div[role="button"]:has-text("Log in")', timeout=60000)
+    page.click('div[role="button"]:has-text("Log in")')
+
     page.wait_for_timeout(5000)
 
     # 投稿画面へ
