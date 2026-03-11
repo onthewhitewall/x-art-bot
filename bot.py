@@ -88,32 +88,23 @@ with sync_playwright() as p:
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
     )
 
-    #page.goto("https://x.com/login")
+    # ログイン画面に移動
     page.goto("https://x.com/i/flow/login")
-    email = os.getenv("X_EMAIL")
 
-    # username
+    # メール／ユーザー名入力
     page.wait_for_selector('input[name="text"]', timeout=60000)
     page.fill('input[name="text"]', username)
     page.keyboard.press("Enter")
 
-    page.wait_for_timeout(4000)
-
-    # email / phone 確認
-    if page.locator('input[name="text"]').count() > 0:
-        page.fill('input[name="text"]', email)
-        page.keyboard.press("Enter")
-
-    page.wait_for_timeout(4000)
-
-    # password
+    # パスワード入力欄が出るまで待つ
     page.wait_for_selector('input[name="password"]', timeout=60000)
     page.fill('input[name="password"]', password)
     page.keyboard.press("Enter")
 
-    page.wait_for_timeout(6000)
+    # ログイン完了まで少し待つ
+    page.wait_for_timeout(5000)
 
-    # 投稿画面
+    # 投稿画面へ
     page.goto("https://x.com/compose/post")
 
     page.wait_for_selector('input[type="file"]', timeout=60000)
