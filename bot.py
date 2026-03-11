@@ -90,24 +90,26 @@ with sync_playwright() as p:
 
     page.goto("https://x.com/login")
 
-    # ユーザー名
+    # username
     page.wait_for_selector('input[name="text"]', timeout=60000)
     page.fill('input[name="text"]', username)
     page.keyboard.press("Enter")
 
-    page.wait_for_timeout(3000)
+    page.wait_for_timeout(4000)
 
-    # 追加認証（出る場合だけ）
+    # 追加 username / email 確認
     if page.locator('input[name="text"]').count() > 0:
         page.fill('input[name="text"]', username)
         page.keyboard.press("Enter")
 
-    # パスワード
+    page.wait_for_timeout(4000)
+
+    # password が出るまで待つ
     page.wait_for_selector('input[name="password"]', timeout=60000)
     page.fill('input[name="password"]', password)
     page.keyboard.press("Enter")
 
-    page.wait_for_timeout(5000)
+    page.wait_for_timeout(6000)
 
     # 投稿画面
     page.goto("https://x.com/compose/post")
