@@ -1,11 +1,11 @@
 import json
 import random
 
-# 作品データ
+# 作品データを読む
 with open("bot_output.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
-works = data["works"]
+works = data["works"]   # lastUpdatedは無視
 
 # 投稿履歴
 try:
@@ -31,7 +31,7 @@ posted.append(work["id"])
 with open("posted.json", "w") as f:
     json.dump(posted, f)
 
-# 画像
+# 画像パス
 image_path = f"images_bot/bot_{work['image']}"
 
 # タイトル
