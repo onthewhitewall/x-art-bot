@@ -1,5 +1,7 @@
 import json
 import random
+import os
+from playwright.sync_api import sync_playwright
 
 # 作品データを読む
 with open("bot_output.json", "r", encoding="utf-8") as f:
