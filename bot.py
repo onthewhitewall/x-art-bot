@@ -54,3 +54,16 @@ https://onthewhitewall.com
 
 print(image_path)
 print(text)
+
+import subprocess
+
+# git 設定
+subprocess.run(["git", "config", "user.name", "github-actions"])
+subprocess.run(["git", "config", "user.email", "github-actions@github.com"])
+
+# 変更をコミット
+subprocess.run(["git", "add", "posted.json"])
+subprocess.run(["git", "commit", "-m", "update posted works"])
+
+# push
+subprocess.run(["git", "push"])
