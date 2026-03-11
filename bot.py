@@ -69,3 +69,31 @@ subprocess.run(["git", "commit", "-m", "update posted works"])
 
 # push
 subprocess.run(["git", "push"])
+
+username = os.getenv("X_USERNAME")
+password = os.getenv("X_PASSWORD")
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    page = browser.new_page()
+
+    page.goto("https://x.com/login")
+
+    page.fill('input[name="text"]', username)
+    page.keyboard.press("Enter")
+
+    page.fill('input[name="password"]', password)
+    page.keyboard.press("Enter")
+
+    page.wait_for_timeout(5000)
+
+    page.goto("https://x.com/compose/post")
+
+    page.set_input_files('input[type="file"]', image_path)
+    page.fill('div[data-testid="tweetTextarea_0"]', text)
+
+    page.click('div[data-testid="tweetButton"]')
+
+    page.wait_for_timeout(5000)
+
+    browser.close()
