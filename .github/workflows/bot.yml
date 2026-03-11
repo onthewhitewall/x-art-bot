@@ -2,8 +2,8 @@ name: artbot
 
 on:
   schedule:
-    - cron: "0 0 * * *"
-    - cron: "0 12 * * *"
+    - cron: "0 2 * * *"
+    - cron: "0 14 * * *"
   workflow_dispatch:
 
 permissions:
@@ -28,3 +28,6 @@ jobs:
 
       - name: run bot
         run: python bot.py
+        env:
+          X_USERNAME: ${{ secrets.X_USERNAME }}
+          X_PASSWORD: ${{ secrets.X_PASSWORD }}
