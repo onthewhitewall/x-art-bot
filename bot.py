@@ -88,7 +88,8 @@ with sync_playwright() as p:
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
     )
 
-    page.goto("https://x.com/login")
+    #page.goto("https://x.com/login")
+    page.goto("https://x.com/i/flow/login")
     email = os.getenv("X_EMAIL")
 
     # username
