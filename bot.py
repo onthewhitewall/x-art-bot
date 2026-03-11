@@ -90,13 +90,19 @@ with sync_playwright() as p:
 
     page.goto("https://x.com/login")
 
-
-    # ユーザー名待機
+    # ユーザー名
     page.wait_for_selector('input[name="text"]', timeout=60000)
     page.fill('input[name="text"]', username)
     page.keyboard.press("Enter")
 
-    # パスワード待機
+    page.wait_for_timeout(3000)
+
+    # 追加認証（出る場合だけ）
+    if page.locator('input[name="text"]').count() > 0:
+        page.fill('input[name="text"]', username)
+        page.keyboard.press("Enter")
+
+    # パスワード
     page.wait_for_selector('input[name="password"]', timeout=60000)
     page.fill('input[name="password"]', password)
     page.keyboard.press("Enter")
