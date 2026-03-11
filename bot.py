@@ -89,6 +89,7 @@ with sync_playwright() as p:
     )
 
     page.goto("https://x.com/login")
+    email = os.getenv("X_EMAIL")
 
     # username
     page.wait_for_selector('input[name="text"]', timeout=60000)
@@ -97,14 +98,14 @@ with sync_playwright() as p:
 
     page.wait_for_timeout(4000)
 
-    # 追加 username / email 確認
+    # email / phone 確認
     if page.locator('input[name="text"]').count() > 0:
-        page.fill('input[name="text"]', username)
+        page.fill('input[name="text"]', email)
         page.keyboard.press("Enter")
 
     page.wait_for_timeout(4000)
 
-    # password が出るまで待つ
+    # password
     page.wait_for_selector('input[name="password"]', timeout=60000)
     page.fill('input[name="password"]', password)
     page.keyboard.press("Enter")
