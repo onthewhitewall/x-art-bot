@@ -2,12 +2,13 @@ import json
 import random
 import os
 from playwright.sync_api import sync_playwright
+import subprocess
 
 # 作品データを読む
 with open("bot_output.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
-works = data["works"]   # lastUpdatedは無視
+works = data["works"]
 
 # 投稿履歴
 try:
@@ -57,39 +58,51 @@ https://onthewhitewall.com
 print(image_path)
 print(text)
 
-import subprocess
+# ----------------
+# git push
+# ----------------
 
-# git 設定
 subprocess.run(["git", "config", "user.name", "github-actions"])
 subprocess.run(["git", "config", "user.email", "github-actions@github.com"])
 
-# 変更をコミット
 subprocess.run(["git", "add", "posted.json"])
 subprocess.run(["git", "commit", "-m", "update posted works"])
 
-# push
 subprocess.run(["git", "push"])
+
+# ----------------
+# Xログイン
+# ----------------
 
 username = os.getenv("X_USERNAME")
 password = os.getenv("X_PASSWORD")
 
 with sync_playwright() as p:
+
     browser = p.chromium.launch(headless=True)
     page = browser.new_page()
 
     page.goto("https://x.com/login")
 
+    # ユーザー名待機
+    page.wait_for_selector('input[name="text"]', timeout=60000)
     page.fill('input[name="text"]', username)
     page.keyboard.press("Enter")
 
+    # パスワード待機
+    page.wait_for_selector('input[name="password"]', timeout=60000)
     page.fill('input[name="password"]', password)
     page.keyboard.press("Enter")
 
     page.wait_for_timeout(5000)
 
+    # 投稿画面
     page.goto("https://x.com/compose/post")
 
+    page.wait_for_selector('input[type="file"]', timeout=60000)
     page.set_input_files('input[type="file"]', image_path)
+
+    page.wait_for_selector('div[data-testid="tweetTextarea_0"]')
     page.fill('div[data-testid="tweetTextarea_0"]', text)
 
     page.click('div[data-testid="tweetButton"]')
