@@ -96,16 +96,18 @@ with sync_playwright() as p:
     page.fill('input[name="text"]', username)
 
     # 「次へ」ボタンをクリックしてパスワード画面へ
-    page.wait_for_selector('div[role="button"]:has-text("Next")', timeout=60000)
-    page.click('div[role="button"]:has-text("Next")')
+    next_button = page.locator('div[role="button"] >> text=Next')
+    next_button.wait_for(state="visible", timeout=60000)
+    next_button.click()
 
     # パスワード待機
     page.wait_for_selector('input[name="password"]', timeout=60000)
     page.fill('input[name="password"]', password)
 
     # ログインボタンをクリック
-    page.wait_for_selector('div[role="button"]:has-text("Log in")', timeout=60000)
-    page.click('div[role="button"]:has-text("Log in")')
+    login_button = page.locator('div[role="button"] >> text="Log in"')
+    login_button.wait_for(state="visible", timeout=60000)
+    login_button.click()
 
     page.wait_for_timeout(5000)
 
