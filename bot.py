@@ -79,10 +79,17 @@ password = os.getenv("X_PASSWORD")
 
 with sync_playwright() as p:
 
-    browser = p.chromium.launch(headless=False)
-    page = browser.new_page()
+    browser = p.chromium.launch(
+        headless=True,
+        args=["--disable-blink-features=AutomationControlled"]
+    )
+
+    page = browser.new_page(
+        user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
+    )
 
     page.goto("https://x.com/login")
+
 
     # ユーザー名待機
     page.wait_for_selector('input[name="text"]', timeout=60000)
